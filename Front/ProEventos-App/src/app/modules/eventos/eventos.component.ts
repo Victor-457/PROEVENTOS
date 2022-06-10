@@ -8,18 +8,52 @@ import { HttpClient } from '@angular/common/http';
 })
 export class EventosComponent implements OnInit {
 
-  eventos: any = [];
+  private _eventos: any = [];
+  public eventosFiltrados: any = [];
+  public show: boolean = false;
+  private _filtroEventos: string = ''
 
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.getEventos()
+    this.getEventos();
+  }
+
+  public get filtroEventos(){
+    return this._filtroEventos;
+  }
+
+  public set filtrosEventos(filtrarPor: string){
+
+    this._filtroEventos = filtrarPor.toLocaleLowerCase()
+
+    this.eventosFiltrados = this.filtroEventos ?  this.filtrarEventos(this._filtroEventos): this._eventos //this.eventos.tema.includes(this._filtroEventos)
+
+  }
+
+  filtrarEventos(filtrarPor: string): any{
+    filtrarPor = filtrarPor.toLocaleLowerCase()
+    return this._eventos.filter(
+      (evento: any) => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1 || evento.local.toLocaleLowerCase().indexOf(filtrarPor) !== -1
+
+    )
   }
 
   public getEventos(){
     this.http.get('https://localhost:5001/api/Evento').subscribe(
-      res => {console.log(res); this.eventos = res},
+      res => {
+        this._eventos = res
+        this.eventosFiltrados = res
+      },
       error => console.log(error)
-    )
+    );
+  }
+
+  public hideImg(){
+    this.show = !this.show;
+  }
+
+  public buscar(){
+
   }
 }

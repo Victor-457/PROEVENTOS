@@ -1,6 +1,71 @@
-<div *ngFor="let evento of eventos">
-  <b>Tema:&nbsp;</b> <span>{{evento.tema}}</span>
+<h2>Eventos</h2>
+<hr>
+
+<div class="container">
+
+  <div class="form-inline">
+    <div class="form-group mb-2">
+      Filtros:&nbsp;
+      <input type="text" class="form me-2" placeholder="buscar"
+      [(ngModel)]="filtrosEventos">
+    </div>
+  </div>
   <br>
-  <b>Local:&nbsp;</b> <span>{{evento.local}}</span>
-  <hr>
+  <table class="table table-stripped">
+    <thead class="table-dark">
+      <tr>
+        <th (click)="hideImg();">
+          <button type="button" class="btn btn-sm btn-outline-light">{{show == true ? "Exibir": "Ocultar"}}</button>
+        </th>
+        <th>#</th>
+        <th>Tema</th>
+        <th>Local</th>
+        <th>Data</th>
+        <th>Qtd Pessoas</th>
+        <th>Lote</th>
+        <th>Opções</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="eventosFiltrados.length">
+      <tr *ngFor="let evento of eventosFiltrados">
+        <td>
+          <img src="./../../../assets/imagens/{{evento.imageURL}}" alt=""
+           [style.width.px]="100" [collapse]="show" [isAnimated]="true">
+        </td>
+        <td>
+          <span>{{evento.eventoID}}</span>
+        </td>
+        <td>
+          <span>{{evento.tema}}</span>
+        </td>
+        <td>
+          <span>{{evento.local}}</span>
+        </td>
+        <td>
+          <span>{{evento.dataEvento}}</span>
+        </td>
+        <td>
+          <span>{{evento.quantidadePessoas}}</span>
+        </td>
+        <td>
+          <span>{{evento.lote}}</span>
+        </td>
+        <td>
+          <span>
+            <button class="me-2 btn btn-sm btn-outline-primary">Editar</button>
+          </span>
+          <span>
+            <button class="btn btn-sm btn-outline-danger">Excluir</button>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="!eventosFiltrados.length">
+      <tr>
+        <td colspan="'8" class="text-center"></td>
+          <h4>Nenhum evento encontrado!</h4>
+      </tr>
+    </tfoot>
+  </table>
+
 </div>
